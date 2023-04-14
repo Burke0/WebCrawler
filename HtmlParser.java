@@ -5,29 +5,20 @@ import javax.swing.text.*;
 import javax.swing.text.html.*;
 import javax.swing.text.html.parser.*;
 
+/*
+ * This is a Java program consisting of two classes. The main class is called HtmlParser and it contains two static vectors images and links. 
+ * The program is designed to parse images and links from a website by a given URL or domain name. 
+ * First, it reads an HTML document from the URL associated with the domain name then uses the MyParserCallbackTagHandler class to parse the HTML code for image and link elements. 
+ * The program stores the resulting image and link URLs into the images and links vectors, respectively. These vectors can be used later, for example, saveToFile method can be run to save the URLs to a file. 
 
+
+* The MyParserCallbackTagHandler class is a helper class that extends HTMLEditorKit.ParserCallback. 
+* It implements the handleSimpleTag method, which is called for each HTML tag which checks for the IMG and LINK tags and adds the associated URLs to the vectors.
+ */
 public class HtmlParser 
 {
 	static Vector<String> images =  new Vector<String>();
-	static Vector<String> links  =  new Vector<String>();
-	
-	//This is the driver code for testing project 2 part a HtmlParser
-	/* public static void main(String[] x)
-	{
-	
-		String d = "https://www.newegg.com";	
-		String s = "https://www.google.com";
-		
-		HtmlParser.parseDomain(d);
-		System.out.println(HtmlParser.images.size() + " Images Found: \n" + 
-				HtmlParser.images + "\nLinks Found:\n"+ HtmlParser.links);
-		HtmlParser.saveToFile("images_test", false);
-		
-		HtmlParser.parseDomain(s);
-		HtmlParser.saveToFile("images_test_2.txt",false);
-		System.out.println(HtmlParser.images.size() + " Images Found: \n" + 
-				HtmlParser.images + "\nLinks Found:\n"+ HtmlParser.links);
-	}*/
+	static Vector<String> links  =  new Vector<String>();	
 	
 	public static void parseDomain(String domain)
 	{

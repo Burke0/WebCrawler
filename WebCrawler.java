@@ -7,6 +7,13 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+
+/*This code defines a Web Crawler program that starts with a seed URL and a given radius to search with. 
+It uses Swing for the user interface (UI) and handles user inputs with an ActionListener interface-implementation. 
+The program builds a list of URLs based on the parsed content of pages visited as the crawler follows the trail of links contained within each. 
+Duplicate links are filtered out so that the program does not visit them twice. The number of pages visited is limited to the value of the radius. 
+The program prints out some information about the current state of the crawl with each URL processed, including the discovered images and links that are added to the UI. */
+
 public class WebCrawler extends JPanel 
 {
 	JList<String> 				list;
@@ -78,40 +85,34 @@ public class WebCrawler extends JPanel
 	 * Next, it adds the images to the list model and links to the urls vector.
 	 * It checks for duplicate links but not duplicate images, and continues to loop 
 	 * until it runs out of links within the given radius 
-	 * 
-	 * There's something wrong with my do while loop because 
-	 * it keeps throwing an ArrayIndexOutOfBoundsException
+	 *
 	 */
 	public void startCrawl(String url, int radius)
 	{
 		try
 		{
 				
-			int UrlsCurrentIndex	=0;
 			UrlWithDistance uwd =new UrlWithDistance(url);
-			
-			urls.add(uwd);
-			Iterator<UrlWithDistance> i = urls.iterator();
-			do
-			{
-				String 	tempUrl			=	urls.elementAt(UrlsCurrentIndex).url;
-				int 	tempDistance	=	urls.elementAt(UrlsCurrentIndex).distance;
-				
-				System.out.println("current index: " + UrlsCurrentIndex + " size: " + urls.size()+" distance: "+tempDistance);
-				
-				UrlsCurrentIndex++;
-				
-				if(tempDistance <=radius) 
-				{
-					HtmlParser.parseDomain(tempUrl);
-					
-					System.out.println("\nFinished Checking: "+ tempUrl+" \n"+tempDistance+" links away from seed\n"+
-							HtmlParser.images.size() + " Images Found: \n" + HtmlParser.images + 
-							"\n" + HtmlParser.links.size()+" Links Found:\n"+ HtmlParser.links);
-					
-					for(int n=0; n<HtmlParser.images.size(); n++)
-					{
-						model.addElement(HtmlParser.images.elementAt(n));;
+            
+            urls.add(uwd);
+            Iterator<UrlWithDistance> i = urls.iterator();
+            while(i.hasNext())
+            {
+                String 	tempUrl			=	i.next().url;
+                int 	tempDistance	=	uwd.distance;
+                
+                System.out.println("current url: " + tempUrl + " size: " + urls.size()+" distance: "+tempDistance);
+                if(tempDistance <=radius) 
+                {
+                    HtmlParser.parseDomain(tempUrl);
+                    
+                    System.out.println("\nFinished Checking: "+ tempUrl+" \n"+tempDistance+" links away from seed\n"+
+                	HtmlParser.images.size() + " Images Found: \n" + HtmlParser.images + 
+                    "\n" + HtmlParser.links.size()+" Links Found:\n"+ HtmlParser.links);
+                    
+                    for(int n=0; n<HtmlParser.images.size(); n++)
+                    {
+                        model.addElement(HtmlParser.images.elementAt(n));
 					}
 					for(int n=0; n<HtmlParser.links.size(); n++)
 					{
@@ -127,7 +128,6 @@ public class WebCrawler extends JPanel
 		}
 		catch(ArrayIndexOutOfBoundsException oops)
 		{
-			System.out.println("I think my do while loop is causing this problem");
 			oops.printStackTrace();
 		}
 		
